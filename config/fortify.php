@@ -72,8 +72,9 @@ return [
     | and the user is authenticated. You are free to change this value.
     |
     */
+    // AHI CAMBIAMOS LA DIRECCION DE DASHBOARD AL DIRECTORIO RAIZ
 
-    'home' => '/dashboard',
+    'home' => '/',
 
     /*
     |--------------------------------------------------------------------------
