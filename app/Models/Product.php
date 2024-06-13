@@ -69,13 +69,12 @@ class Product extends Model
           return Storage::url($this->image_path);
       }
 
-
     //RELACION UNO A MUCHOS INVERSA
       public function subcategory(){
         return $this-> belongsTo(Subcategory::class);
             }
 
-            //RELACION UNO A MUCHOS 
+    //RELACION UNO A MUCHOS 
       public function variants(){
         return $this-> hasMany(Variant::class);
             }
