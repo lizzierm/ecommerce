@@ -5,19 +5,37 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
+
+
+
+    public function __construct(){
+        // $this->middleware('can:admin.users.index')->only('index');
+        // $this->middleware('can:admin.users.create')->only('create','store');
+        // $this->middleware('can:admin.users.edit')->only('edit','update');
+        // $this->middleware('can:admin.users.destroy')->only('destroy');
+
+
+    }
     public function index()
     {
-        $users = User::orderBy('id', 'desc')->paginate(10);
+
+        // $this->authorize('admin.users.index');
+        $users = User::orderBy('id', 'asc')->paginate(10);
+                
         return view('admin.users.index', [
             'users' => $users,
         ]);
+        
     }
+    
 
     public function create()
     {
+        // $this->authorize('admin.users.create');
         return view('admin.users.create');
         
     }
@@ -59,26 +77,61 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        return view('admin.users.edit', compact('user'));
+        $roles = Role::all();
+        return view('admin.users.edit', compact('user', 'roles'));
     }
 
     public function update(Request $request, User $user)
-    {
-        $request->validate([
-            'name' => 'required',
-            // Agrega aquí las validaciones para los demás campos si es necesario
-        ]);
+{
+    // Validación de los datos
+    $request->validate([
+        'name' => 'required',
+        'document_type' => 'required',
+        'document_number' => 'required',
+        'email' => 'required|email',
+        'phone' => 'required',
+    ]);
 
-        $user->update($request->all());
+    // Actualización de los roles del usuario
+    $user->roles()->sync($request->roles);
 
-        session()->flash('swal', [
-            'icon' => 'success',
-            'title' => 'Actualizado',
-            'text' => 'Usuario actualizado correctamente.',
-        ]);
+    // Actualización de los datos del usuario
+    $user->update([
+        'name' => $request->name,
+        'document_type' => $request->document_type,
+        'document_number' => $request->document_number,
+        'email' => $request->email,
+        'phone' => $request->phone,
+    ]);
 
-        return redirect()->route('admin.users.index');
-    }
+    // Mensaje flash de éxito
+    session()->flash('swal', [
+        'icon' => 'success',
+        'title' => 'Actualizado',
+        'text' => 'Usuario actualizado correctamente.',
+    ]);
+
+    // Redirección a la lista de usuarios
+    return redirect()->route('admin.users.index');
+}
+
+        // public function update(Request $request, User $user)
+    // {
+    //     $user->roles()->sync($request->roles);
+    //     $request->validate([
+    //         'name' => 'required',
+    //     ]);
+
+    //     $user->update($request->all());
+
+    //     session()->flash('swal', [
+    //         'icon' => 'success',
+    //         'title' => 'Actualizado',
+    //         'text' => 'Usuario actualizado correctamente.',
+    //     ]);
+
+    //     return redirect()->route('admin.users.index');
+    // }
 
     public function destroy(User $user)
     {

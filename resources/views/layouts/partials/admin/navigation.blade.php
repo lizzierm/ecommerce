@@ -40,7 +40,7 @@
                                 </button>
                             @else
                                 <span class="inline-flex rounded-md">
-                                    <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50 dark:active:bg-gray-700 transition ease-in-out duration-150">
+                                    <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:hover:text-gray-300 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50 dark:active:bg-gray-700 transition ease-in-out duration-150">
                                         {{ Auth::user()->name }}
 
                                         <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -53,21 +53,27 @@
 
                         <x-slot name="content">
                             <!-- Account Management -->
-                            <div class="block px-4 py-2 text-xs text-gray-400">
+                            <div class="block px-4 py-2 text-xs text-gray-500">
                                 {{ __('Manage Account') }}
+                            </div>
+                            
+                            <div>
+                                @foreach (Auth::user()->roles as $role)
+                                <x-dropdown-link>
+                                    {{ Auth::user()->name }} - {{ $role->name }}
+                                </x-dropdown-link>
+                                @endforeach
                             </div>
 
                             <x-dropdown-link href="{{ route('profile.show') }}">
                                 {{ __('Profile') }}
                             </x-dropdown-link>
-
+                                                                       
                             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                                 <x-dropdown-link href="{{ route('api-tokens.index') }}">
                                     {{ __('API Tokens') }}
                                 </x-dropdown-link>
                             @endif
-
-                            <div class="border-t border-gray-200 dark:border-gray-600"></div>
 
                             <!-- Authentication -->
                             <form method="POST" action="{{ route('logout') }}" x-data>
@@ -77,6 +83,15 @@
                                          @click.prevent="$root.submit();">
                                     {{ __('Log Out') }}
                                 </x-dropdown-link>
+
+                                {{-- navigation de la pagina de admin pagina del administrador --}}
+                                <div class="flex justify-center items-center">
+                                    <h1 class="text-gray-300 text-sm">
+                                        <a href="{{ route('welcome.index') }}" class="link-class hover:text-purple-500 focus:text-purple-500">
+                                            Sitio web Bella_Butique
+                                        </a>
+                                    </h1>
+                                </div>  
                             </form>
                         </x-slot>
                     </x-dropdown>

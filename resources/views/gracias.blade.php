@@ -38,7 +38,7 @@
                  Bs. {{$response['order']['amount']}}  
                   {{-- {{$response['order']['currency']}}  --}}
                 </P>
-
+                
             </div>
 
         @endif

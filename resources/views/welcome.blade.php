@@ -45,7 +45,7 @@
                         </h1>
 
                         <p class="text-gray-600 mb-4">
-                           $/ {{$product->price}}
+                           Bs.  / {{$product->price}}
                         </p>
 
                         <a href="{{route('products.show', $product)}}" class="btn btn-yellow block w-full text-center">

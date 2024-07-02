@@ -6,55 +6,85 @@ $links = [
     'name' => 'Dashboard',
     'route' => route('admin.dashboard'),
     'active' => request()->routeIs('admin.dashboard'),
+
     ],
+
+    [
+    'header' => 'Administrar pagina',
+    'icon' => 'fa-solid fa-users',
+    ],
+
     [//usuarios
     'icon' => 'fa-solid fa-users',
     'name' => 'Usuarios',
     'route' => route('admin.users.index'), // Ajustar la ruta a 'admin.users.index'
     'active' => request()->routeIs('admin.users.*'), // Ajustar la verificación de ruta a 'admin.users.*'
+    'can' => 'admin.users.index', // Permiso para administradores
     ],
     [
     'icon' => 'fa-solid fa-user-tie',
     'name' => 'Roles',
-    'route' => route('admin.dashboard'),
-    'active' => request()->routeIs('admin.dashboard'),
+    'route' => route('admin.roles.index'),
+    'active' => request()->routeIs('admin.roles.*'),
+    'can' => 'Administrador', // Permiso para administradores
     ],
     [//Opciones
     'icon' => 'fa-solid fa-gear' ,
     'name' => 'Opciones',
     'route' => route('admin.options.index'),
     'active' => request()->routeIs('admin.options.*'),
+    'can' => 'Administrador',
+
     ],
     [//familia de productos
     'icon' => 'fa-solid fa-people-roof',
     'name' => 'Familias',
     'route' => route('admin.families.index'),
     'active' => request()->routeIs('admin.families.*'),
+    'can' => 'Administrador',
+
     ],
     [//Categorias
     'icon' => 'fa-solid fa-list' ,
     'name' => 'Categorias',
     'route' => route('admin.categories.index'),
     'active' => request()->routeIs('admin.categories.*'),
+    'can' => 'Administrador',
+
     ],
     [//Subcategorias
     'icon' => 'fa-solid fa-sitemap' ,
     'name' => 'Subcategorias',
     'route' => route('admin.subcategories.index'),
     'active' => request()->routeIs('admin.subcategories.*'),
+    'can' => 'Administrador',
+
     ],
     [//Products
     'icon' => 'fa-solid fa-gifts' ,
     'name' => 'Productos',
     'route' => route('admin.products.index'),
     'active' => request()->routeIs('admin.products.*'),
+    'can' => ['Administrador', 'Vendedor'],
+
     ],
-    [//Covers
+    [//Covers Portadas
     'icon' => 'fa-solid fa-images' ,
     'name' => 'Portadas',
     'route' => route('admin.covers.index'),
     'active' => request()->routeIs('admin.covers.*'),
-    ]
+    'can' => ['Administrador', 'Vendedor'],
+
+    ],
+
+    [//Envios
+    'icon' => 'fa-solid fa-truck-fast',
+    'name' => 'Envios',
+    'route' => route('admin.orders.index'),
+    'active' => request()->routeIs('admin.orders.*'),
+    'can' => ['Administrador', 'Vendedor'],
+    ],
+
 ];
 @endphp
 {{-- aqui esta el pedaso que falto del sidebar --}}
@@ -72,16 +102,26 @@ $links = [
 
                 <li>
                     {{-- aqui editaremos el color de nuestra plantilla --}}
-                    <a href="{{ $link['route'] }}"
-                    class="flex items-center p-2 text-gray-800 rounded-lg dark:text-black hover:bg-gray-100 dark:hover:bg-gray-100 group {{ $link['active'] ? 'bg-green-100' : '' }}"
 
-                        <span class="inline-flex w-6 h-6 justify-items-center items-center">
-                        <i class="{{$link['icon']}}"></i>
-                        </span>
-                            <span class="ms-2">
-                                {{$link['name']}}
+                    @isset( $link['header'])
+                               
+                        <div class="px-3 py-2 text-xs font-semibold text-white uppercase">
+                            {{$link['header']}}
+                        </div>
+
+                    @else
+                        <a href="{{ $link['route'] }}"
+                        class="flex items-center p-2 text-gray-800 rounded-lg dark:text-black hover:bg-gray-100 dark:hover:bg-gray-100 group {{ $link['active'] ? 'bg-green-100' : '' }}"
+
+                            <span class="inline-flex w-6 h-6 justify-items-center items-center">
+                            <i class="{{$link['icon']}}"></i>
                             </span>
-                    </a>
+                                <span class="ms-2">
+                                    {{$link['name']}}
+                                </span>
+                        </a>
+
+                    @endisset
                 </li>
             @endforeach
 

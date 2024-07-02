@@ -92,6 +92,7 @@
             ¡Gracias por su compra!
         </div>
 
+       
     </div>
 </body>
 </html>

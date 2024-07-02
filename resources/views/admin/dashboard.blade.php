@@ -25,7 +25,7 @@
                   @csrf
                   <button
                      class="text-sm font-bold text-black hover:text-blue-700 rounded-full border border-green-600 hover:border-green-700 px-4 py-1">
-                     Cerrar Sesión
+                     Cerrar Sesión 
                   </button>
 
 

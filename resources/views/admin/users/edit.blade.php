@@ -24,10 +24,9 @@
                 {{-- Tipo de documento --}}
                 <div>
                     <x-label for="document_type" value="Tipo de documento" />
-                    
-                    <x-select class="w-full " id="document_type" name="document_type">
+                    <x-select class="w-full" id="document_type" name="document_type">
                         @foreach (App\Enums\TypeOfDocuments::cases() as $item)
-                            <option value="{{$item->value}}" @if($user->document_type == $item->value) selected @endif>{{$item->name}}</option>                   
+                            <option value="{{$item->value}}" @if($user->document_type == $item->value) selected @endif>{{$item->name}}</option>
                         @endforeach
                     </x-select>
                 </div>
@@ -46,6 +45,22 @@
                     <x-label for="phone" value="Teléfono" />
                     <x-input id="phone" class="block mt-1 w-full" type="text" name="phone" :value="$user->phone" required />
                 </div>
+                {{-- Roles --}}
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="text-lg font-semibold mb-4 text-black">Listado de roles</h4>
+                        @foreach ($roles as $role)
+                            <div>
+                                <label class="text-black"> <!-- Aplica el color negro aquí -->
+                                    <input type="checkbox" name="roles[]" value="{{ $role->id }}" {{ $user->roles->contains($role) ? 'checked' : '' }} class="mr-1">
+                                    {{ $role->name }}
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                
+
             </div>
 
             <div class="flex items-center justify-end mt-4">
@@ -53,8 +68,8 @@
                     {{ __('Cancel') }}
                 </a>
 
-                <x-button class="ms-4">
-                    {{ __('Actualizar') }}
+                <x-button class="ml-4">
+                    {{ __('Update') }}
                 </x-button>
             </div>
         </form>
