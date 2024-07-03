@@ -33,7 +33,7 @@ $links = [
     'name' => 'Opciones',
     'route' => route('admin.options.index'),
     'active' => request()->routeIs('admin.options.*'),
-    'can' => 'Administrador',
+    'can' => 'admin.options.index',
 
     ],
     [//familia de productos
@@ -41,7 +41,7 @@ $links = [
     'name' => 'Familias',
     'route' => route('admin.families.index'),
     'active' => request()->routeIs('admin.families.*'),
-    'can' => 'Administrador',
+    'can' => 'admin.families.index',
 
     ],
     [//Categorias

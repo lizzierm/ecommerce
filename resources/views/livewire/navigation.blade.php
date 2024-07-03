@@ -92,25 +92,7 @@
                             <x-dropdown-link href="{{route('profile.show')}}">
                                 Mi perfil 
                             </x-dropdown-link>
-
-                            @can('admin.dashboard')                         
-                                <div class="flex justify-center items-center">
-                                    <h1 class="text-gray-300 text-sm">
-                                        <a href="{{ route('admin.dashboard') }}" class="link-class hover:text-purple-500 focus:text-purple-500">
-                                            Administrar Cuenta
-                                        </a>
-                                    </h1>
-                                </div>
-                            @endcan
-                            
-                            {{-- @can('admin-access') <!-- Suponiendo que tienes una política o permiso llamado 'admin-access' -->
-                                <x-dropdown-link href="{{ route('admin.dashboard') }}">
-                                    Administrador
-                                </x-dropdown-link>
-                                <div class="border-t border-gray-200"></div>
-                            @endcan --}}
-
-
+                                                  
                             <div class="border-t border-gray-200">
                             </div>
                             <!-- Authentication -->
@@ -122,6 +104,17 @@
                                 </x-dropdown-link>
                             </form>
                             @endguest
+
+
+                            @can('admin.dashboard')                         
+                            <div class="flex justify-center items-center">
+                                <h1 class="text-gray-300 text-sm">
+                                    <a href="{{ route('admin.dashboard') }}" class="link-class hover:text-purple-500 focus:text-purple-500">
+                                        Administrar Cuenta
+                                    </a>
+                                </h1>
+                            </div>
+                        @endcan
 
                         </x-slot>
                     </x-dropdown>

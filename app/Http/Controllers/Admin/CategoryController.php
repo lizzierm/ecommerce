@@ -17,7 +17,7 @@ class CategoryController extends Controller
     {
         $categories = category::orderBy('id', 'desc')
         ->with('family')
-        ->paginate(10);
+        ->paginate(15);
 
 
         return view('admin.categories.index', compact(('categories')));

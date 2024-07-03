@@ -72,11 +72,12 @@
 
         </div>
     </form>
-    <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" id="delete-form">
-        @csrf
-        @method('DELETE')
-    </form>
-
+        @can('admin.categories.destroy')
+            <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" id="delete-form">
+                @csrf
+                @method('DELETE')
+            </form>
+        @endcan
     @push('js')
     <script>
         function confirmDelete() {

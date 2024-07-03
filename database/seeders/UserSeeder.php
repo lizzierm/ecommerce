@@ -110,6 +110,7 @@ class UserSeeder extends Seeder
             'email' => 'Leydy@example.com',
             'phone' => '987654321',
             'password' => bcrypt('password123')
+            
         ]);
 
     }

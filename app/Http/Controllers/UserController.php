@@ -40,40 +40,82 @@ class UserController extends Controller
         
     }
 
+    // public function store(Request $request)
+    // {
+    //            $request->validate([
+    //         'name' => 'required',
+    //         'email' => [
+    //             'required',
+    //             'email',
+    //             Rule::unique('users'),
+    //         ],
+          
+    //     ], [
+    //         'email.unique' => 'El correo electrónico ya está registrado.',
+    //     ]);
+    
+    //     try {
+           
+    //         User::create($request->all());
+    
+    //          session()->flash('swal', [
+    //             'icon' => 'success',
+    //             'title' => 'Usuario creado',
+    //             'text' => 'El usuario ha sido creado correctamente.',
+    //         ]);
+    //     } catch (\Exception $e) {
+           
+    //         return redirect()->back()->withErrors(['error' => 'Ocurrió un error al crear el usuario. Por favor, inténtalo de nuevo.']);
+    //     }
+    
+    //      return redirect()->route('admin.users.index');
+    // }
     public function store(Request $request)
-    {
-        // Validación de datos
-        $request->validate([
-            'name' => 'required',
-            'email' => [
-                'required',
-                'email',
-                Rule::unique('users'),
-            ],
-            // Agrega más reglas de validación para otros campos si es necesario
-        ], [
-            'email.unique' => 'El correo electrónico ya está registrado.',
+{
+    // Validación de datos
+    $request->validate([
+        'name' => 'required',
+        'last_name' => 'required',
+        'document_type' => 'required',
+        'document_number' => 'required',
+        'email' => [
+            'required',
+            'email',
+            Rule::unique('users'),
+        ],
+        'phone' => 'required',
+        'password' => 'required|string|min:8|confirmed',
+    ], [
+        'email.unique' => 'El correo electrónico ya está registrado.',
+    ]);
+
+    try {
+        // Crea un nuevo usuario
+        User::create([
+            'name' => $request->input('name'),
+            'last_name' => $request->input('last_name'),
+            'document_type' => $request->input('document_type'),
+            'document_number' => $request->input('document_number'),
+            'email' => $request->input('email'),
+            'phone' => $request->input('phone'),
+            'password' => bcrypt($request->input('password')), // Hashea la contraseña
         ]);
-    
-        try {
-            // Crea un nuevo usuario
-            User::create($request->all());
-    
-            // Muestra el mensaje de éxito después de crear el usuario
-            session()->flash('swal', [
-                'icon' => 'success',
-                'title' => 'Usuario creado',
-                'text' => 'El usuario ha sido creado correctamente.',
-            ]);
-        } catch (\Exception $e) {
-            // Si ocurre una excepción (por ejemplo, violación de unicidad), redirecciona de vuelta al formulario con un mensaje de error
-            return redirect()->back()->withErrors(['error' => 'Ocurrió un error al crear el usuario. Por favor, inténtalo de nuevo.']);
-        }
-    
-        // Redirecciona a la vista de listado de usuarios
-        return redirect()->route('admin.users.index');
+
+        // Muestra el mensaje de éxito después de crear el usuario
+        session()->flash('swal', [
+            'icon' => 'success',
+            'title' => 'Usuario creado',
+            'text' => 'El usuario ha sido creado correctamente.',
+        ]);
+    } catch (\Exception $e) {
+        // Si ocurre una excepción, redirecciona de vuelta al formulario con un mensaje de error
+        return redirect()->back()->withErrors(['error' => 'Ocurrió un error al crear el usuario. Por favor, inténtalo de nuevo.']);
     }
-    
+
+    // Redirecciona a la vista de listado de usuarios
+    return redirect()->route('admin.users.index');
+}
+
 
     public function edit(User $user)
     {
