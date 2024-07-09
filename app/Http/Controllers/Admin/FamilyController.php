@@ -90,7 +90,7 @@ class FamilyController extends Controller
                 'text'=> 'No se puede eliminar la familia porque tiene categorías asociadas',
             ]);
 
-            return redirect()->route('admin.families.edit', $family);
+            return redirect()->route('admin.families.index', $family);
         }
 
         $family->delete();

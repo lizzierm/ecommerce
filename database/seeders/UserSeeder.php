@@ -24,21 +24,21 @@ class UserSeeder extends Seeder
         ])->assignRole('Administrador');
 
         $user = User::create([
-            'name' => 'John',
-            'last_name' => 'Doe', // Ejemplo: John Doe
+            'name' => 'Daniela',
+            'last_name' => 'Rojas', // Ejemplo: John Doe
             'document_type' => '1',
             'document_number' => '1234567',
-            'email' => 'john@example.com',
+            'email' => 'daniela@example.com',
             'phone' => '987654321',
             'password' => bcrypt('12345678')
         ]);
 
         $user = User::create([
-            'name' => 'Alice',
-            'last_name' => 'Smith',
+            'name' => 'Elias',
+            'last_name' => 'Soruco',
             'document_type' => '2',
             'document_number' => '9876543',
-            'email' => 'alice@example.com',
+            'email' => 'admin@example.com',
             'phone' => '123456789',
             'email_verified_at' => now(),
             'password' => bcrypt('12345678')

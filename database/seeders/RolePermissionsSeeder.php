@@ -90,14 +90,7 @@ class RolePermissionsSeeder extends Seeder
                     'description' =>'crear portada'])->syncRoles([$role1, $role2]);
         Permission::create(['name' => 'admin.covers.edit',
                     'description' =>'editar portada'])->syncRoles([$role1, $role2]);
-        Permission::create(['name' => 'admin.covers.destroy',
-                    'description' =>'eliminar portada'])->syncRoles([$role1, $role2]);
-        //PERMISOS PARA ENVIOS
-        Permission::create(['name' => 'admin.orders.index',
-                    'description' =>'ver ordenes'])->syncRoles([$role1, $role2]);
-        Permission::create(['name' => 'admin.orders.ticket',
-                    'description' =>'ver tickets'])->syncRoles([$role1, $role2]);
-            
+           
     }
     
 }

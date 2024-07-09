@@ -18,7 +18,6 @@ class UserController extends Controller
         // $this->middleware('can:admin.users.edit')->only('edit','update');
         // $this->middleware('can:admin.users.destroy')->only('destroy');
 
-
     }
     public function index()
     {
@@ -40,36 +39,7 @@ class UserController extends Controller
         
     }
 
-    // public function store(Request $request)
-    // {
-    //            $request->validate([
-    //         'name' => 'required',
-    //         'email' => [
-    //             'required',
-    //             'email',
-    //             Rule::unique('users'),
-    //         ],
-          
-    //     ], [
-    //         'email.unique' => 'El correo electrónico ya está registrado.',
-    //     ]);
     
-    //     try {
-           
-    //         User::create($request->all());
-    
-    //          session()->flash('swal', [
-    //             'icon' => 'success',
-    //             'title' => 'Usuario creado',
-    //             'text' => 'El usuario ha sido creado correctamente.',
-    //         ]);
-    //     } catch (\Exception $e) {
-           
-    //         return redirect()->back()->withErrors(['error' => 'Ocurrió un error al crear el usuario. Por favor, inténtalo de nuevo.']);
-    //     }
-    
-    //      return redirect()->route('admin.users.index');
-    // }
     public function store(Request $request)
 {
     // Validación de datos
