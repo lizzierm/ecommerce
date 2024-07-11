@@ -1,23 +1,25 @@
+{{-- resources/views/admin/categories/index.blade.php --}}
+
 <x-admin-layout :breadcrumbs="[
     [
         'name' => 'Dashboard',
         'route' => route('admin.dashboard'),
     ],
     [
-        'name' => 'Familias',
+        'name' => 'Categorías',
     ]
 ]">
 
     <x-slot name="action">
-        @can('admin.families.create')
-            <a class="btn btn-yellow rounded-full" href="{{ route('admin.families.create') }}">
+        @can('admin.categories.create')
+            <a class="btn btn-yellow rounded-full" href="{{ route('admin.categories.create') }}">
                 Nuevo
             </a>
         @endcan
     </x-slot>
 
-    @can('admin.families.index')
-        @if ($families->count())
+    @can('admin.categories.index')
+        @if ($categories->count())
             <div class="overflow-x-auto mt-4">
                 <table class="min-w-full bg-white rounded-lg overflow-hidden">
                     <thead class="bg-blue-500 text-white">
@@ -34,24 +36,24 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
-                        @foreach ($families as $family)
+                        @foreach ($categories as $category)
                             <tr class="h-12"> {{-- Reducir altura de las filas --}}
                                 <td class="px-6 py-2 border-b border-gray-200 whitespace-nowrap text-sm font-medium text-gray-900"> {{-- Reducir padding vertical --}}
-                                    {{ $family->id }}
+                                    {{ $category->id }}
                                 </td>
                                 <td class="px-6 py-2 border-b border-gray-200 whitespace-nowrap text-sm text-gray-500"> {{-- Reducir padding vertical --}}
-                                    {{ $family->name }}
+                                    {{ $category->name }}
                                 </td>
                                 <td class="px-6 py-2 border-b border-gray-200 whitespace-nowrap text-sm font-medium">
                                     <div class="flex">
-                                        @can('admin.families.edit')
-                                            <a href="{{ route('admin.families.edit', $family) }}" class="btn btn-pink rounded-full me-1">
+                                        @can('admin.categories.edit')
+                                            <a href="{{ route('admin.categories.edit', $category) }}" class="btn btn-pink rounded-full me-1">
                                                 <i class="fa-solid fa-file-pen"></i>
                                             </a>
                                         @endcan
-                                
-                                        @can('admin.families.destroy')
-                                            <form id="delete-form-{{ $family->id }}" action="{{ route('admin.families.destroy', $family) }}" method="POST" onsubmit="confirmDelete(event, {{ $family->id }})" class="ml-1">
+
+                                        @can('admin.categories.destroy')
+                                            <form id="delete-form-{{ $category->id }}" action="{{ route('admin.categories.destroy', $category) }}" method="POST" onsubmit="confirmDelete(event, {{ $category->id }})" class="ml-1">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-red rounded-full">
@@ -67,7 +69,7 @@
                 </table>
             </div>
             <div class="mt-4">
-                {{ $families->links() }}
+                {{ $categories->links() }}
             </div>
         @else
             <div class="flex items-center p-4 text-sm text-black rounded-lg bg-purple-500 dark:bg-pink-100 dark:text-black" role="alert">
@@ -76,14 +78,15 @@
                 </svg>
                 <span class="sr-only">Info</span>
                 <div>
-                    <span class="font-medium">Info alert!</span> No hay registros de familias registradas.
+                    <span class="font-medium">Info alert!</span> No hay registros de categorías registradas.
                 </div>
             </div>
         @endif
     @else
         <div class="alert alert-danger mt-4" style="background-color: #dc3545; color: #fff;">
-            El usuario no tiene permitido ver este módulo de categorias.
+            El usuario no tiene permitido ver este módulo de categorías.
         </div>
     @endcan
 
 </x-admin-layout>
+

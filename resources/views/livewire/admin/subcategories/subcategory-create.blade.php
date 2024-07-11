@@ -61,7 +61,5 @@
 
         </div>
     </form>
-    {{-- prueba para ver si esta bien  --}}
-    {{-- @dump($subcategory) --}}
 
 </div>

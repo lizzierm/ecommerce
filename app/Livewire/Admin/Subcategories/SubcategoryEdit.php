@@ -65,7 +65,7 @@ class SubcategoryEdit extends Component
             'title' => '¡Bien hecho!',
             'text' => 'Subcategoria actualizada exitosamente',
         ]);
-        // return redirect()->route('admin.subcategories.index');
+        return redirect()->route('admin.subcategories.index');
     }
     public function render()
     {

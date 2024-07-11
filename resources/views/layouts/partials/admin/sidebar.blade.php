@@ -19,21 +19,21 @@ $links = [
     'name' => 'Usuarios',
     'route' => route('admin.users.index'), // Ajustar la ruta a 'admin.users.index'
     'active' => request()->routeIs('admin.users.*'), // Ajustar la verificación de ruta a 'admin.users.*'
-    'can' => 'admin.users.index', // Permiso para administradores
+ 
     ],
     [
     'icon' => 'fa-solid fa-user-tie',
     'name' => 'Roles',
     'route' => route('admin.roles.index'),
     'active' => request()->routeIs('admin.roles.*'),
-    'can' => 'Administrador', // Permiso para administradores
+   
     ],
     [//Opciones
     'icon' => 'fa-solid fa-gear' ,
     'name' => 'Opciones',
     'route' => route('admin.options.index'),
     'active' => request()->routeIs('admin.options.*'),
-    'can' => 'admin.options.index',
+    
 
     ],
     [//familia de productos
@@ -41,7 +41,7 @@ $links = [
     'name' => 'Familias',
     'route' => route('admin.families.index'),
     'active' => request()->routeIs('admin.families.*'),
-    'can' => 'admin.families.index',
+   
 
     ],
     [//Categorias
@@ -49,32 +49,28 @@ $links = [
     'name' => 'Categorias',
     'route' => route('admin.categories.index'),
     'active' => request()->routeIs('admin.categories.*'),
-    'can' => 'Administrador',
-
+  
     ],
     [//Subcategorias
     'icon' => 'fa-solid fa-sitemap' ,
     'name' => 'Subcategorias',
     'route' => route('admin.subcategories.index'),
     'active' => request()->routeIs('admin.subcategories.*'),
-    'can' => 'Administrador',
-
+    
     ],
     [//Products
     'icon' => 'fa-solid fa-gifts' ,
     'name' => 'Productos',
     'route' => route('admin.products.index'),
     'active' => request()->routeIs('admin.products.*'),
-    'can' => ['Administrador', 'Vendedor'],
-
+    
     ],
     [//Covers Portadas
     'icon' => 'fa-solid fa-images' ,
     'name' => 'Portadas',
     'route' => route('admin.covers.index'),
     'active' => request()->routeIs('admin.covers.*'),
-    'can' => ['Administrador', 'Vendedor'],
-
+   
     ],
 
     [//Envios
@@ -82,7 +78,7 @@ $links = [
     'name' => 'Envios',
     'route' => route('admin.orders.index'),
     'active' => request()->routeIs('admin.orders.*'),
-    'can' => ['Administrador', 'Vendedor'],
+   
     ],
 
 ];

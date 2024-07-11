@@ -96,3 +96,4 @@ class ProductCreate extends Component
         return view('livewire.admin.products.product-create');
     }
 }
+
