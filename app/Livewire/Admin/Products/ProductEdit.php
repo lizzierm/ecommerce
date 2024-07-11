@@ -1,98 +1,74 @@
 <?php
 
-namespace App\Livewire\Admin\Products;
+namespace App\Livewire\Admin\Subcategories;
 
 use App\Models\Category;
 use App\Models\Family;
-use App\Models\Subcategory;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Computed;
-use Livewire\Attributes\On;
 use Livewire\Component;
-use Livewire\WithFileUploads;
 
-class ProductEdit extends Component
+class SubcategoryEdit extends Component
 {
-    use WithFileUploads;
 
-    public $product;
-    public $productEdit;
+    public  $subcategory;
 
     public $families;
-    public $family_id = '';
-    public $category_id = '';
-    public $image;
 
-    public function mount($product)
-    {
-        $this->productEdit = $product->only('sku', 'name', 'description', 'image_path','stock', 'price', 'subcategory_id');
+    public $subcategoryEdit ;
+    // =[
+    //     'family_id' =>'',
+    //     'category_id' => '',
+    //     'name' => ''
+    // ];
+    public function mount($subcategory){ 
+
         $this->families = Family::all();
-        $this->category_id = $product->subcategory->category->id;
-        $this->family_id = $product->subcategory->category->family_id;
-    }
 
-    public function updatedFamilyId($value)
-    {
-        // Reset subcategory_id when family_id changes
-        $this->category_id = '';
-        $this->productEdit['subcategory_id'] = '';
+        $this->subcategoryEdit = [
+            'family_id' =>$subcategory->category->family_id,
+            'category_id' => $subcategory->category_id,
+            'name' => $subcategory->name
+        ];
     }
-
-    public function updatedCategoryId($value)
-    {
-        // Reset subcategory_id when category_id changes
-        $this->productEdit['subcategory_id'] = '';
-    }
-    #[On('variant-generate')]
-    public function updateProduct(){
-        $this->product = $this->product->fresh();
-    }
+    public function updatedsubcategoryEditFamilyId(){
+       
+        $this->subcategoryEdit['category_id']='';
+    } 
 
     #[Computed()]
-    public function categories()
-    {
-        // Filter categories by selected family_id
-        return Category::where('family_id', $this->family_id)->get();
+    public function categories(){
+        return Category::where('family_id', $this->subcategoryEdit['family_id'])->get();
     }
-
-    #[Computed()]
-    public function subcategories()
-    {
-        // Filter subcategories by selected category_id
-        return Subcategory::where('category_id', $this->category_id)->get();
-    }
-
-    public function store()
-    {
+    public function save(){
+        // dd($this->subcategory);
         $this->validate([
-            'image' => 'nullable|image|max:1024',
-            'productEdit.sku' => 'required|unique:products,sku,' . $this->product->id,
-            'productEdit.name' => 'required|max:255',
-            'productEdit.description' => 'nullable',
-            'productEdit.stock' => 'required|numeric|min:0',
-            'productEdit.price' => 'required|numeric|min:0',
-            'productEdit.subcategory_id' => 'required|exists:subcategories,id',
+            'subcategoryEdit.family_id' => 'required|exists:families,id',
+            'subcategoryEdit.category_id' => 'required|exists:categories,id',
+            'subcategoryEdit.name' => 'required',
         ]);
+        $this->subcategory->update($this->subcategoryEdit);
+        // ,[],[
+        //     'subcategoryEdit.family_id' => 'familia',
+        //     'subcategoryEdit.category_id' =>'categoria',
+        //     'subcategoryEdit.name' => 'nombre'
 
-        if ($this->image) {
-            Storage::delete($this->productEdit['image_path']);
-            $this->productEdit['image_path'] = $this->image->store('products');
-        }
+        // ]);
+        // Subcategory::create($this->subcategory);
 
-        $this->product->update($this->productEdit);
-
-        session()->flash('swal', [
+        // session()->flash('swal',[
+        //     'icon' => 'success',
+        //     'title' => '¡Bien hecho!',
+        //     'text' => 'Subcategoria actualizada exitosamente',
+        // ]);
+        $this->dispatch('swal', [
             'icon' => 'success',
             'title' => '¡Bien hecho!',
-            'text' => 'Producto actualizado exitosamente',
+            'text' => 'Subcategoria actualizada exitosamente',
         ]);
-    
-        return redirect()->route('admin.products.edit', $this->product);
-
+        return redirect()->route('admin.subcategories.index');
     }
-
     public function render()
     {
-        return view('livewire.admin.products.product-edit');
+        return view('livewire.admin.subcategories.subcategory-edit');
     }
 }

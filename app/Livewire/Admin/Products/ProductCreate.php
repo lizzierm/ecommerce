@@ -1,99 +1,74 @@
 <?php
 
-namespace App\Livewire\Admin\Products;
+namespace App\Livewire\Admin\Subcategories;
 
 use App\Models\Category;
 use App\Models\Family;
-use App\Models\Product;
 use App\Models\Subcategory;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
-use Livewire\WithFileUploads;
 
-class ProductCreate extends Component
+class SubcategoryCreate extends Component
 {
-    use WithFileUploads;
-    // eso permite subir imagenes a nuestra app
 
     public $families;
-    public $family_id = '';
-    public $category_id = '';
-    public $image = '';
-    public $product =[
-        'sku' => '',
-        'name' => '',
-        'description' => '',
-        'image_path' => '',
-        'price' => '',
-        'subcategory_id' => '',
     
+    public $subcategory = [
+        'family_id' => '',
+        'category_id' => '',
+        'name' => '',
     ];
-    public function mount(){
+    // mount metodo para recargar 
+    public function mount(){ 
         $this->families = Family::all();
     }
-    public function boot(){
-        $this->withValidator(function ($validator){
-           
-                if($validator->fails()){
-                   
-                    $this->dispatch('swal', [
-                        'icon' => 'error',
-                        'title' => '¡Error!',
-                        'text' => 'El formulario contiene errores',
-                    ]);
-                }
-            
-    });
-    }
-    public function updatedFamilyId($value){
-        // categorias-subcategorias
-        $this->category_id = '';
-        $this->product['subcategory_id']='';
-    }
 
-    public function updatedCategoryId($value){
-        
-        $this->product['subcategory_id']='';
-    }
-
-    #[Computed()]
-    public function categories(){
-        return Category::where('family_id', $this->family_id)->get();
-    }   
-    #[Computed()]
-    public function subcategories(){
-        return Subcategory::where('category_id', $this->category_id)->get();
-    }  
-    public function store()
-    {
-        $this->validate([
-            'image' => 'required|image|max:1024',
-            'product.sku' => 'required|unique:products,sku',
-            'product.name' => 'required|max:255',
-            'product.description' => 'nullable',
-            'product.price' => 'required|numeric|min:0',
-            'product.subcategory_id' => 'required|exists:subcategories,id',
-        ]);
-    
-        if ($this->image instanceof \Illuminate\Http\UploadedFile) {
-            $this->product['image_path'] = $this->image->store('products');
-        }
-    
-        $product = Product::create($this->product);
-    
-        session()->flash('swal', [
-            'icon' => 'success',
-            'title' => '¡Bien hecho!',
-            'text' => 'Producto creado exitosamente',
-        ]);
-    
-        return redirect()->route('admin.products.edit', $product);
-    }
-    
-    
-    public function render()
-    {
-        return view('livewire.admin.products.product-create');
+  
+    public function updatedSubcategoryFamilyId()
+{
+    $this->subcategory['category_id'] = null; // Reiniciar category_id
+    if (!empty($this->subcategory['family_id'])) {
+        $this->subcategory['category_id'] = Category::where('family_id', $this->subcategory['family_id'])->value('id');
     }
 }
 
+  
+    #[Computed]
+    public function categories()
+    {
+        if (!empty($this->subcategory['family_id'])) {
+            return Category::where('family_id', $this->subcategory['family_id'])->get();
+        } else {
+            return collect(); // Retorna una colección vacía si family_id no está configurado
+        }
+    }
+    
+
+    public function save()
+    {
+        $this->validate([
+            'subcategory.family_id' => 'required|exists:families,id',
+            'subcategory.category_id' => 'required|exists:categories,id',
+            'subcategory.name' => 'required',
+        ], [], [
+            'subcategory.family_id' => 'familia',
+            'subcategory.category_id' => 'categoria',
+            'subcategory.name' => 'nombre'
+        ]);
+
+        Subcategory::create([
+            'family_id' => $this->subcategory['family_id'],
+            'category_id' => $this->subcategory['category_id'],
+            'name' => $this->subcategory['name'],
+        ]);
+
+        session()->flash('message', '¡La subcategoría se ha creado correctamente!');
+
+        return redirect()->route('admin.subcategories.index');
+    }
+
+    public function render()
+    {
+        return view('livewire.admin.subcategories.subcategory-create');
+    }
+}
