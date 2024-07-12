@@ -76,7 +76,7 @@ class ProductCreate extends Component
         ]);
     
         if ($this->image instanceof \Illuminate\Http\UploadedFile) {
-            $this->product['image_path'] = $this->image->store('products');
+            $this->product['image_path'] = $this->image->store('img');
         }
     
         $product = Product::create($this->product);
