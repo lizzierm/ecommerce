@@ -1,5 +1,7 @@
 *
-!products/
-!covers/
 !.gitignore
+!products/
+!products/*
+!covers/
+!covers/*
 
