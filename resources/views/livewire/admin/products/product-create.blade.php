@@ -6,7 +6,7 @@
                 <label class="flex items-center px-4 py-2 rounded-lg bg-yellow-200 cursor-pointer text-gray-700 ">
                     <i class="fas fa-camera mr-2"></i>
                     Actualizar Imagen
-                    <input type="file"  wire:model="image">
+                    <input type="file" class="hidden" accept="image/*" wire:model="image">
                 </label>
             
             </div>
@@ -15,7 +15,7 @@
             alt="">
         </figure>
 
-            <x-validation-errors class="mb-4"/>
+            
 
         <div class="card">
             <div class="mb-2"> <!-- Reduje el espacio aquí -->
