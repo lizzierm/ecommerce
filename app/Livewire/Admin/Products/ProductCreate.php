@@ -9,6 +9,7 @@ use App\Models\Subcategory;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Illuminate\Http\UploadedFile;
 
 class ProductCreate extends Component
 {
@@ -18,7 +19,7 @@ class ProductCreate extends Component
     public $families;
     public $family_id = '';
     public $category_id = '';
-    public $image = '';
+    public $image;
     public $product =[
         'sku' => '',
         'name' => '',
@@ -75,7 +76,7 @@ class ProductCreate extends Component
             'product.subcategory_id' => 'required|exists:subcategories,id',
         ]);
     
-        if ($this->image instanceof \Illuminate\Http\UploadedFile) {
+        if ($this->image) {
             $this->product['image_path'] = $this->image->store('img');
         }
     
