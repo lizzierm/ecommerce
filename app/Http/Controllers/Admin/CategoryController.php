@@ -20,7 +20,7 @@ class CategoryController extends Controller
         ->paginate(15);
 
 
-        return view('admin.categories.index', compact(('categories')));
+        return view('admin.categories.index', compact('categories'));
     }
 
     public function create()
