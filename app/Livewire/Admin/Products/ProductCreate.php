@@ -6,104 +6,57 @@ use App\Models\Category;
 use App\Models\Family;
 use App\Models\Product;
 use App\Models\Subcategory;
-use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Log;
 
-
-use Faker\Extension\FileExtension;
-
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
-
-
 class ProductCreate extends Component
 {
     use WithFileUploads;
-    // eso permite subir imagenes a nuestra app
 
     public $families;
     public $family_id = '';
     public $category_id = '';
-    public $image = '';
-    public $product =[
+    public $image;
+    public $product = [
         'sku' => '',
         'name' => '',
         'description' => '',
         'image_path' => '',
         'price' => '',
         'subcategory_id' => '',
-    
     ];
-    public function mount(){
+
+    public function mount()
+    {
         $this->families = Family::all();
     }
-    public function boot(){
-        $this->withValidator(function ($validator){
-           
-                if($validator->fails()){
-                   
-                    $this->dispatch('swal', [
-                        'icon' => 'error',
-                        'title' => '¡Error!',
-                        'text' => 'El formulario contiene errores',
-                    ]);
-                }
-            
-    });
-    }
-    public function updatedFamilyId($value){
-        // categorias-subcategorias
+
+    public function updatedFamilyId($value)
+    {
         $this->category_id = '';
-        $this->product['subcategory_id']='';
+        $this->product['subcategory_id'] = '';
     }
 
-    public function updatedCategoryId($value){
-        
-        $this->product['subcategory_id']='';
+    public function updatedCategoryId($value)
+    {
+        $this->product['subcategory_id'] = '';
     }
 
-    #[Computed()]
-    public function categories(){
+    public function categories()
+    {
         return Category::where('family_id', $this->family_id)->get();
-    }   
-    #[Computed()]
-    public function subcategories(){
+    }
+
+    public function subcategories()
+    {
         return Subcategory::where('category_id', $this->category_id)->get();
-    }  
-    // public function store()
-    // {
-    //     $this->validate([
-    //         'image' => 'required|image|max:1024',
-    //         'product.sku' => 'required|unique:products,sku',
-    //         'product.name' => 'required|max:255',
-    //         'product.description' => 'nullable',
-    //         'product.price' => 'required|numeric|min:0',
-    //         'product.subcategory_id' => 'required|exists:subcategories,id',
-    //     ]);
-    
-    //     if ($this->image instanceof \Illuminate\Http\UploadedFile) {
-    //         Log::info("hollasssssssssssssssssssssssssssss: {$this->image->store('products')}");
-    //         $this->product['image_path'] = $this->image->store('products', 'public');
-                //$this->product['image_path']  = $this->image->storeAs('public/products', $this->image);
-    //     }
-    
-    //     $product = Product::create($this->product);
-    
-    //     session()->flash('swal', [
-    //         'icon' => 'success',
-    //         'title' => '¡Bien hecho!',
-    //         'text' => 'Producto creado exitosamente',
-    //     ]);
-    
-    //     return redirect()->route('admin.products.edit', $product);
-    // }
-    
+    }
+
     public function store()
     {
         $this->validate([
-            'image' => 'required|image|max:1024',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'product.sku' => 'required|unique:products,sku',
             'product.name' => 'required|max:255',
             'product.description' => 'nullable',
@@ -111,19 +64,13 @@ class ProductCreate extends Component
             'product.subcategory_id' => 'required|exists:subcategories,id',
         ]);
 
-        if ($this->image instanceof \Illuminate\Http\UploadedFile) {
-            Log::info('Imagen recibida: ' . $this->image->getClientOriginalName());
-           // $this->product['image_path'] = $this->image->store('products', 'public');
-           $image_name=time().'-'.$this->image->getClientOriginalName();
-
-           $this->product['image_path']=$this->image->storeAs('products',$image_name, 'custom_public_path');
-           Log::info('holallalall : '.$this->image->storeAs('products',$image_name, 'custom_public_path'));
-         // $img_path=asset('uploads/images/'.$image_name);
-            Log::info('Imagen almacenada en: ' . $this->product['image_path']);
+        if ($this->image) {
+            $imageName = time() . '.' . $this->image->getClientOriginalExtension();
+            $this->image->storeAs('products', $imageName, 'public');
+            $this->product['image_path'] = 'products/' . $imageName;
         }
 
         $product = Product::create($this->product);
-        Log::info('Producto creado: ' . $product->id);
 
         session()->flash('swal', [
             'icon' => 'success',
@@ -132,47 +79,6 @@ class ProductCreate extends Component
         ]);
 
         return redirect()->route('admin.products.edit', $product);
-       /* DB::beginTransaction();
-
-        try {
-            //code...
-          //  $id_empresa = Auth::user()->empresa->id;
-            $this->validate([
-            
-                
-                'image' => 'required|image|max:1024',
-                'product.sku' => 'required|unique:products,sku',
-                'product.name' => 'required|max:255',
-                'product.description' => 'nullable',
-                'product.price' => 'required|numeric|min:0',
-                'product.subcategory_id' => 'required|exists:subcategories,id',
-            ]);
-
-            $producto = new Product();
-            
-            $producto->image = '';
-            $producto->sku = $this->sku;
-            $producto->name = $this->name;
-            $producto->description = $this->description;
-            $producto->price = $this->price;
-            $producto->subcategory_id = $this->subcategory_id;
-            $producto->save();
-
-            if (!empty($this->image)) {
-                $extensionImagen =  $this->image->extension();
-                $nombreImagen = 'PRODUCTO' . str_pad($producto->id, STR_PAD_RIGHT) . '.' . $extensionImagen;
-                $rutaImagen = $this->image->storeAs('public/products', $nombreImagen);
-                $producto->update(['image' => Storage::url($rutaImagen)]);
-            }
-
-            DB::commit();
-            $this->dispatch('producto-creado', 'producto creado satisfactoriamente');
-            $this->reset('name', 'image', 'descripcion', 'sku',  'price', 'subcategory_id');
-        } catch (\Throwable $th) {
-            //throw $th;
-            DB::rollBack();
-            $this->dispatch('producto-error', 'producto No se pudo crear. intente nuevamente');
-        }*/
     }
 
     public function render()
@@ -180,4 +86,3 @@ class ProductCreate extends Component
         return view('livewire.admin.products.product-create');
     }
 }
-
