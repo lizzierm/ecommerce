@@ -19,7 +19,7 @@
             @endif
         </figure>
 
-        <x-validation-errors class="mb-4"/>
+        {{-- <x-validation-errors class="mb-4"/> --}}
 
         <div class="card">
             <div class="mb-2">
