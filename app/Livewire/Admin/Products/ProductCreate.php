@@ -116,8 +116,8 @@ class ProductCreate extends Component
            // $this->product['image_path'] = $this->image->store('products', 'public');
            $image_name=time().'-'.$this->image->getClientOriginalName();
 
-           $this->product['image_path']=$this->image->storeAs('products',$image_name, 'public');
-           Log::info('holallalall : '.$this->image->storeAs('products',$image_name, 'public'));
+           $this->product['image_path']=$this->image->storeAs('products',$image_name, 'custom_public_path');
+           Log::info('holallalall : '.$this->image->storeAs('products',$image_name, 'custom_public_path'));
          // $img_path=asset('uploads/images/'.$image_name);
             Log::info('Imagen almacenada en: ' . $this->product['image_path']);
         }

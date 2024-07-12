@@ -55,6 +55,13 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
         ],
+          //se agrego nuevo
+    'custom_public_path' => [
+        'driver' => 'local',
+        'root' => public_path('products'),
+        'url' => env('APP_URL').'/public',
+        'visibility' => 'public',
+  ],
 
     ],
 
@@ -74,12 +81,6 @@ return [
         storage_path('app/public'),
     ],
     
-    //se agrego nuevo
-    'custom_public_path' => [
-       'driver' => 'local',
-       'root' => public_path('products'),
-       'url' => env('APP_URL').'/public',
-       'visibility' => 'public',
- ],
+  
 
 ];
