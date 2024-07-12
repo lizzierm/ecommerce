@@ -6,7 +6,7 @@
                 <label class="flex items-center px-4 py-2 rounded-lg bg-yellow-200 cursor-pointer text-gray-700 ">
                     <i class="fas fa-camera mr-2"></i>
                     Actualizar Imagen
-                    <input type="file" class="hidden" accept="image/*" wire:model="image">
+                    <input type="file"  wire:model="image">
                 </label>
             
             </div>
