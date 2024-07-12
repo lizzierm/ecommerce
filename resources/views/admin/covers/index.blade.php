@@ -24,6 +24,8 @@
                     data-id="{{ $cover->id }}">
 
                     <img src="{{ $cover->image }}" alt="" class="w-full lg:w-64 aspect-[3/1] object-cover object-center">
+                    {{-- <img src="{{  Storage::url("/storage/app/{$cover->image}") }}" alt="" class="w-full lg:w-64 aspect-[3/1] object-cover object-center"> --}}
+                   
 
                     <div class="p-4 lg:flex-1 lg:flex lg:justify-between lg:items-center space-y-2 lg:space-y-0">
                         <div>
