@@ -66,6 +66,33 @@ class ProductCreate extends Component
     public function subcategories(){
         return Subcategory::where('category_id', $this->category_id)->get();
     }  
+    // public function store()
+    // {
+    //     $this->validate([
+    //         'image' => 'required|image|max:1024',
+    //         'product.sku' => 'required|unique:products,sku',
+    //         'product.name' => 'required|max:255',
+    //         'product.description' => 'nullable',
+    //         'product.price' => 'required|numeric|min:0',
+    //         'product.subcategory_id' => 'required|exists:subcategories,id',
+    //     ]);
+    
+    //     if ($this->image instanceof \Illuminate\Http\UploadedFile) {
+    //         Log::info("hollasssssssssssssssssssssssssssss: {$this->image->store('products')}");
+    //         $this->product['image_path'] = $this->image->store('products', 'public');
+    //     }
+    
+    //     $product = Product::create($this->product);
+    
+    //     session()->flash('swal', [
+    //         'icon' => 'success',
+    //         'title' => '¡Bien hecho!',
+    //         'text' => 'Producto creado exitosamente',
+    //     ]);
+    
+    //     return redirect()->route('admin.products.edit', $product);
+    // }
+    
     public function store()
     {
         $this->validate([
@@ -76,24 +103,25 @@ class ProductCreate extends Component
             'product.price' => 'required|numeric|min:0',
             'product.subcategory_id' => 'required|exists:subcategories,id',
         ]);
-    
+
         if ($this->image instanceof \Illuminate\Http\UploadedFile) {
-            Log::info("hollasssssssssssssssssssssssssssss: {$this->image->store('products')}");
-            $this->product['image_path'] = $this->image->store('products');
+            Log::info('Imagen recibida: ' . $this->image->getClientOriginalName());
+            $this->product['image_path'] = $this->image->store('products', 'public');
+            Log::info('Imagen almacenada en: ' . $this->product['image_path']);
         }
-    
+
         $product = Product::create($this->product);
-    
+        Log::info('Producto creado: ' . $product->id);
+
         session()->flash('swal', [
             'icon' => 'success',
             'title' => '¡Bien hecho!',
             'text' => 'Producto creado exitosamente',
         ]);
-    
+
         return redirect()->route('admin.products.edit', $product);
     }
-    
-    
+
     public function render()
     {
         return view('livewire.admin.products.product-create');
