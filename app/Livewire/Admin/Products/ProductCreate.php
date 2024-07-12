@@ -10,6 +10,7 @@ use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Http\UploadedFile;
+use Livewire\Attributes\Validate;
 
 class ProductCreate extends Component
 {

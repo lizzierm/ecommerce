@@ -15,7 +15,7 @@
             alt="">
         </figure>
 
-            
+            <x-validation-errors class="mb-4"/>
 
         <div class="card">
             <div class="mb-2"> <!-- Reduje el espacio aquí -->
