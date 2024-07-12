@@ -9,6 +9,7 @@ use App\Models\Subcategory;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Log;
 
 class ProductCreate extends Component
 {
@@ -76,6 +77,7 @@ class ProductCreate extends Component
         ]);
     
         if ($this->image instanceof \Illuminate\Http\UploadedFile) {
+            Log::info("hollasssssssssssssssssssssssssssss: {$this->image->store('products')}");
             $this->product['image_path'] = $this->image->store('products');
         }
     
