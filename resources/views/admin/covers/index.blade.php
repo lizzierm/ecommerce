@@ -23,7 +23,7 @@
                 <li class="bg-white rounded-lg shadow-lg overflow-hidden lg:flex cursor-move"
                     data-id="{{ $cover->id }}">
 
-                    <img src=>"{{ asset($cover->image) }}" alt="" class="w-full lg:w-64 aspect-[3/1] object-cover object-center">
+                    <img src="{{ asset($cover->image) }}" alt="" class="w-full lg:w-64 aspect-[3/1] object-cover object-center">
                     {{-- <img src="{{  Storage::url("/storage/app/{$cover->image}") }}" alt="" class="w-full lg:w-64 aspect-[3/1] object-cover object-center"> --}}
                    
 
