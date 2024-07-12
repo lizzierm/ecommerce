@@ -1,3 +1,5 @@
 *
-!.gitignore
 !products/
+!covers/
+!.gitignore
+
