@@ -11,6 +11,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Log;
 
+
 class ProductCreate extends Component
 {
     use WithFileUploads;

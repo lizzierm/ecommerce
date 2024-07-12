@@ -70,7 +70,16 @@ return [
     */
 
     'links' => [
-        public_path('storage') => storage_path('app/public'),
+        public_path('storage') => 
+        storage_path('app/public'),
     ],
+
+    //se agrego nuevo
+    'custom_public_path' => [
+       'driver' => 'local',
+       'root' => public_path('products'),
+       'url' => env('APP_URL').'/public',
+       'visibility' => 'public',
+ ],
 
 ];
