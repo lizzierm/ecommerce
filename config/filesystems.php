@@ -73,7 +73,7 @@ return [
         public_path('storage') => 
         storage_path('app/public'),
     ],
-
+    
     //se agrego nuevo
     'custom_public_path' => [
        'driver' => 'local',

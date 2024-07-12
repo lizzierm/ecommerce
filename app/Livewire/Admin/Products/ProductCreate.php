@@ -12,6 +12,12 @@ use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Log;
 
 
+use Faker\Extension\FileExtension;
+
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+
+
 class ProductCreate extends Component
 {
     use WithFileUploads;
@@ -80,6 +86,7 @@ class ProductCreate extends Component
     //     if ($this->image instanceof \Illuminate\Http\UploadedFile) {
     //         Log::info("hollasssssssssssssssssssssssssssss: {$this->image->store('products')}");
     //         $this->product['image_path'] = $this->image->store('products', 'public');
+                //$this->product['image_path']  = $this->image->storeAs('public/products', $this->image);
     //     }
     
     //     $product = Product::create($this->product);
@@ -106,7 +113,12 @@ class ProductCreate extends Component
 
         if ($this->image instanceof \Illuminate\Http\UploadedFile) {
             Log::info('Imagen recibida: ' . $this->image->getClientOriginalName());
-            $this->product['image_path'] = $this->image->store('products', 'public');
+           // $this->product['image_path'] = $this->image->store('products', 'public');
+           $image_name=time().'-'.$this->image->getClientOriginalName();
+
+           $this->product['image_path']=$this->image->storeAs('products',$image_name, 'public');
+           Log::info('holallalall : '.$this->image->storeAs('products',$image_name, 'public'));
+         // $img_path=asset('uploads/images/'.$image_name);
             Log::info('Imagen almacenada en: ' . $this->product['image_path']);
         }
 
@@ -120,6 +132,47 @@ class ProductCreate extends Component
         ]);
 
         return redirect()->route('admin.products.edit', $product);
+       /* DB::beginTransaction();
+
+        try {
+            //code...
+          //  $id_empresa = Auth::user()->empresa->id;
+            $this->validate([
+            
+                
+                'image' => 'required|image|max:1024',
+                'product.sku' => 'required|unique:products,sku',
+                'product.name' => 'required|max:255',
+                'product.description' => 'nullable',
+                'product.price' => 'required|numeric|min:0',
+                'product.subcategory_id' => 'required|exists:subcategories,id',
+            ]);
+
+            $producto = new Product();
+            
+            $producto->image = '';
+            $producto->sku = $this->sku;
+            $producto->name = $this->name;
+            $producto->description = $this->description;
+            $producto->price = $this->price;
+            $producto->subcategory_id = $this->subcategory_id;
+            $producto->save();
+
+            if (!empty($this->image)) {
+                $extensionImagen =  $this->image->extension();
+                $nombreImagen = 'PRODUCTO' . str_pad($producto->id, STR_PAD_RIGHT) . '.' . $extensionImagen;
+                $rutaImagen = $this->image->storeAs('public/products', $nombreImagen);
+                $producto->update(['image' => Storage::url($rutaImagen)]);
+            }
+
+            DB::commit();
+            $this->dispatch('producto-creado', 'producto creado satisfactoriamente');
+            $this->reset('name', 'image', 'descripcion', 'sku',  'price', 'subcategory_id');
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+            $this->dispatch('producto-error', 'producto No se pudo crear. intente nuevamente');
+        }*/
     }
 
     public function render()
